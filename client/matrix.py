@@ -24,20 +24,20 @@ class Matrix:
         return Image.open(path).resize(self.size)
 
     def image_to_bytes(self, im):
-        bytearr = io.BytesIO()
-        im.save(bytearr, format="PPM")
-        return bytearr
+        byte_io = io.BytesIO()
+        im.save(byte_io, format="PPM")
+        return byte_io
 
     def show(self, im_path):
         if not im_path or not im_path.is_file():
             raise ValueError("{} is not a valid file path".format(im_path))
 
         thumb = self.resize_to_panel(im_path)
-        thumb_bytes = self.image_to_bytes(thumb)
+        thumb_byte_io = self.image_to_bytes(thumb)
 
         try:
             self.socket.connect(self.socket_addr)
-            self.socket.send(thumb_bytes.getbuffer())
+            self.socket.send(thumb_byte_io.getbuffer())
             self.socket.recv()
             self.socket.disconnect(self.socket_addr)
         except:

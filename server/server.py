@@ -7,9 +7,36 @@ import zmq
 
 IS_PRODUCTION = os.uname()[4][:3] == "arm"
 
-class DevPanel:
+
+class MockMatrix:
     def SetImage(self, im):
-        im.show()
+        byte_io = io.BytesIO()
+        im.save(byte_io, format="PPM")
+        print(byte_io.getbuffer().nbytes)
+
+
+def matrix_factory(width):
+    options = RGBMatrixOptions()
+    options.rows = width
+    options.chain_length = 1
+    options.parallel = 1
+    options.hardware_mapping = "adafruit-hat"
+    panel = RGBMatrix(options=options)
+    return panel
+
+
+class Panel:
+    def __init__(self):
+        self.prev_byte_io = None
+        self.panel = matrix_factory(32) if IS_PRODUCTION else MockMatrix()
+
+    def draw(self, message):
+        byte_io = io.BytesIO(message)
+
+        if not compare_bytes(self.prev_byte_io, byte_io):
+            self.prev_byte_io = byte_io
+            im = Image.open(byte_io)
+            self.panel.SetImage(im.convert("RGB"))
 
 
 def get_bytes(byte_io):
@@ -22,35 +49,6 @@ def is_byte_io(val):
 
 def compare_bytes(a, b):
     return is_byte_io(a) and is_byte_io(b) and get_bytes(a) == get_bytes(b)
-
-
-def panel_factory(width):
-    options = RGBMatrixOptions()
-    options.rows = width
-    options.chain_length = 1
-    options.parallel = 1
-    options.hardware_mapping = "adafruit-hat"
-    panel = RGBMatrix(options=options)
-    return panel
-
-
-def dev_panel_factory():
-    return DevPanel()
-
-
-class Panel:
-    def __init__(self):
-        self.prev_byte_io = None
-        self.panel = panel_factory(32) if IS_PRODUCTION else dev_panel_factory()
-
-    def draw(self, message):
-        byte_io = io.BytesIO(message)
-
-        if not compare_bytes(self.prev_byte_io, byte_io):
-            self.prev_byte_io = byte_io
-            im = Image.open(byte_io)
-            print(im)
-            self.panel.SetImage(im.convert("RGB"))
 
 
 panel = Panel()
