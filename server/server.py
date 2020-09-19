@@ -2,6 +2,7 @@ import io
 import os
 from rgbmatrix import RGBMatrix, RGBMatrixOptions
 import syslog
+import time
 from PIL import Image
 import zmq
 
@@ -12,7 +13,7 @@ class MockMatrix:
     def SetImage(self, im):
         byte_io = io.BytesIO()
         im.save(byte_io, format="PPM")
-        print(byte_io.getbuffer().nbytes)
+        print("[{}] {}".format(time.time(), byte_io.getbuffer().nbytes))
 
 
 def matrix_factory(width):
