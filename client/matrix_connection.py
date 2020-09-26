@@ -6,7 +6,7 @@ import zmq
 from PIL import Image
 
 
-ZMQ_HOST = "raspberrypi.local"
+ZMQ_HOST = "thirtytwopixels.local"
 PORT = 5555
 
 

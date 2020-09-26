@@ -29,7 +29,6 @@ def matrix_factory(width):
     options.gpio_slowdown = 0
     options.pwm_lsb_nanoseconds = 100
     options.pwm_dither_bits = 1
-    options.brightness = 35
-    options.pixel_mapper_config = "Rotate:90"
+    options.pixel_mapper_config= "Rotate:90"
     matrix = RGBMatrix(options=options)
     return matrix
