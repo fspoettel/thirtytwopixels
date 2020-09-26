@@ -3,7 +3,6 @@ import os
 import syslog
 from client.matrix import Matrix
 
-
 if __name__ == "__main__":
     try:
         if os.getenv("MPD_PLAYER_STATE") == "stop":

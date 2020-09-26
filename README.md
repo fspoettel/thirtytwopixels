@@ -124,6 +124,12 @@ You can then enable the service via:
 sudo systemctl enable thirtytwopixels.service
 ```
 
+## Command-line interface
+
+The `main.py` file provides a basic command-line interface to send messages to the server. Currently the following commands are implemented:
+
+- `python3 main.py clear` clears the current cover displayed
+
 ## Pictures
 
 <div align="center">
