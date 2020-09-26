@@ -25,7 +25,7 @@ The project is split into two parts:
 
 Communication between client and server is handled by a 0MQ TCP socket.
 
-### Client Setup
+### Client
 
 Clone or fork this repo:
 
@@ -58,7 +58,7 @@ If your pi is not using the hostname `raspberrypi.local`, you will need to adjus
 
 > ℹ️ It is assumed that `cover.{jpg,png}` files are stored in the album folders alongside music files. If that is not the case, you'll need to implement a module analogous to `./client/mpd.py` and call its `get_cover` method in `./on_song_change.py`. The method should return an absolute file system path to an image.
 
-### Server Setup
+### Server
 
 Clone this repo **recursively** to include the [rgb-led-matrix](https://github.com/hzeller/rpi-rgb-led-matrix) submodule:
 
@@ -95,6 +95,33 @@ Run the server:
 
 ```sh
 sudo python3 server/server.py
+```
+
+Once you are happy with the panel config, you can add the server as a `systemd` service which is started at startup. To do that, create the following file at `/etc/systemd/system/thirtytwopixels.service`:
+
+```sh
+[Unit]
+Description=thirtytwopixels tcp server
+
+[Service]
+ExecStart=/usr/bin/python3 /usr/local/lib/thirtytwopixels/server/server.py
+
+[Install]
+WantedBy=default.target
+```
+
+and move the repo to `/usr/local/lib/`:
+
+```sh
+mv thirtytwopixels /usr/local/lib/
+sudo chown root:root /usr/local/lib/thirtytwopixels/server/server.py
+sudo chmod 644 /usr/local/lib/thirtytwopixels/server/server.py
+```
+
+You can then enable the service via:
+
+```sh
+sudo systemctl enable thirtytwopixels.service
 ```
 
 ## Pictures
