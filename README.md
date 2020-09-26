@@ -9,9 +9,9 @@
 
 ## Hardware
 
-- Raspberry Pi Zero W
+- Raspberry Pi Zero WH
 - [Adafruit RGB Matrix Bonnet](https://www.adafruit.com/product/3211)
-- A 32x32 LED matrix with a HUB75 connection (available on Adafruit and Aliexpress)
+- A 32x32 LED matrix with a HUB75 connection (available on e.g. Adafruit, Pimoroni, Aliexpress). I used [this one](https://shop.pimoroni.com/products/rgb-led-matrix-panel?variant=35962488650).
 - A 5V 4A power adapter
 
 Refer to the [Adafruit instructions](https://learn.adafruit.com/adafruit-rgb-matrix-bonnet-for-raspberry-pi/) to set it up.
@@ -21,14 +21,14 @@ I recommend to do the PWM mod, it completely removed noticeable flicker for me.
 
 The project is split into two parts:
 
-- a client that is invoked from `ncmpcpp`'s `execute_song_on_change` callback
-- a server that is run on a raspberry pi in your local network
+- a client script that is invoked from `ncmpcpp`'s config hooks
+- a server script that runs on a raspberry pi connected to the LED matrix
 
 Communication between client and server is handled by a 0MQ TCP socket.
 
 ### Client Setup
 
-Clone this repo:
+Clone or fork this repo:
 
 ``` sh
 git clone https://github.com/fspoettel/thirtytwopixels
@@ -40,7 +40,7 @@ Install required modules:
 pip3 install -r requirements.txt
 ```
 
-Add the following line to `~/.ncmpcpp/config`:
+Add the following lines to `~/.ncmpcpp/config`:
 
 ```conf
 # errors and output is appended to syslog
@@ -48,7 +48,7 @@ execute_on_song_change="(path_to_repo/on_song_change.py &> /dev/null &)"
 execute_on_player_state_change = "(path_to_repo/on_player_state_change.py &> /dev/null &)"
 ```
 
-Make sure that `./on_song_change.py` is executable:
+Make sure that our hooks are executable:
 
 ```sh
 chmod +x on_song_change.py
@@ -57,20 +57,20 @@ chmod +x on_player_state_change.py
 
 If your pi is not using the hostname `raspberrypi.local`, you will need to adjust `ZMQ_HOST` in `./client/matrix.py`.
 
-> ℹ️ It is assumed that `cover.jpg` files are stored in the album folders alongside music files. If that is not the case, you'll need to implement a module analogous to `./client/mpd.py` and call its `get_cover` method in `./on_song_change.py`. The method should return an absolute file system path to an image.
+> ℹ️ It is assumed that `cover.{jpg,png}` files are stored in the album folders alongside music files. If that is not the case, you'll need to implement a module analogous to `./client/mpd.py` and call its `get_cover` method in `./on_song_change.py`. The method should return an absolute file system path to an image.
 
-### Server setup
+### Server Setup
 
-Clone this repo recursively:
+Clone this repo **recursively** to include the [rgb-led-matrix](https://github.com/hzeller/rpi-rgb-led-matrix) submodule:
 
 ```sh
 git clone --recursive https://github.com/fspoettel/thirtytwopixels
 ```
 
-Install required modules:
+Install required modules. Note that the script **needs to use** sudo to interface with the hardware:
 
 ```sh
-pip3 install -r requirements.txt
+sudo pip3 install -r requirements.txt
 ```
 
 Setup [rpi-rgb-led-matrix](https://github.com/hzeller/rpi-rgb-led-matrix):
@@ -81,7 +81,7 @@ make build-python PYTHON=$(which python3)
 sudo make install-python PYTHON=$(which python3)
 ```
 
-Set panel options in `server.py`. You probably at least want to touch the pixel mapper config:
+Set / adjust panel options in `server.py`:
 
 ```py
 def matrix_factory(width):
@@ -95,7 +95,7 @@ def matrix_factory(width):
 Run the server:
 
 ```sh
-python3 server/server.py
+sudo python3 server/server.py
 ```
 
 ## Pictures
