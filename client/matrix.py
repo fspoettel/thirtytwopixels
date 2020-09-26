@@ -28,17 +28,23 @@ class Matrix:
         im.save(byte_io, format="PPM")
         return byte_io
 
+    def send_socket_message(self, message):
+        try:
+            self.socket.connect(self.socket_addr)
+            self.socket.send(message)
+            res = self.socket.recv()
+            self.socket.disconnect(self.socket_addr)
+            return res
+        except:
+            raise ConnectionError("Could not send message to socket")
+
     def show(self, im_path):
         if not im_path or not im_path.is_file():
             raise ValueError("{} is not a valid file path".format(im_path))
 
         thumb = self.resize_to_panel(im_path)
         thumb_byte_io = self.image_to_bytes(thumb)
+        self.send_socket_message(thumb_byte_io.getbuffer())
 
-        try:
-            self.socket.connect(self.socket_addr)
-            self.socket.send(thumb_byte_io.getbuffer())
-            self.socket.recv()
-            self.socket.disconnect(self.socket_addr)
-        except:
-            raise ConnectionError("Could not send message to socket")
+    def clear(self):
+        self.send_socket_message(b"UUDDLRLRBA")

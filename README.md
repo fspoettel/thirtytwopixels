@@ -40,12 +40,14 @@ Add the following line to `~/.ncmpcpp/config`:
 ```conf
 # errors and output is appended to syslog
 execute_on_song_change="(path_to_repo/on_song_change.py &> /dev/null &)"
+execute_on_player_state_change = "(path_to_repo/on_player_state_change.py &> /dev/null &)"
 ```
 
 Make sure that `./on_song_change.py` is executable:
 
 ```sh
 chmod +x on_song_change.py
+chmod +x on_player_state_change.py
 ```
 
 If your pi is not using the hostname `raspberrypi.local`, you will need to adjust `ZMQ_HOST` in `./client/matrix.py`.

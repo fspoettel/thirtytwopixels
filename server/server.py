@@ -35,6 +35,10 @@ class Panel:
         self.prev_byte_io = None
         self.panel = matrix_factory(32) if IS_PRODUCTION else MockMatrix()
 
+    def clear(self):
+        self.prev_byte_io = None
+        self.panel.Clear()
+
     def draw(self, message):
         byte_io = io.BytesIO(message)
 
@@ -64,7 +68,10 @@ socket.bind("tcp://*:5555")
 while True:
     try:
         message = socket.recv()
-        panel.draw(message)
+        if message == b"UUDDLRLRBA":
+            panel.clear()
+        else:
+            panel.draw(message)
         socket.send(b"1")
     except Exception as e:
         syslog.syslog(syslog.LOG_ERR, str(e))

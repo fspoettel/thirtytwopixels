@@ -4,7 +4,7 @@ from subprocess import check_output
 
 
 # @see https://beets.readthedocs.io/en/stable/plugins/fetchart.html
-COVER_NAME = "cover.jpg"
+COVER_NAMES = ("cover.jpg", "cover.png")
 MUSIC_DIR = os.getenv("DIR_BEETS")
 
 
@@ -25,10 +25,16 @@ def get_parent_dir(file):
 
 
 def get_cover_file(directory):
-    cover_path = directory / COVER_NAME
-    if not cover_path.is_file():
+    cover = None
+    for name in COVER_NAMES:
+        cover_path = directory / name
+        if cover_path.is_file():
+            cover = cover_path
+            break
+
+    if not cover:
         raise ValueError("No cover found")
-    return cover_path
+    return cover
 
 
 def get_cover():
