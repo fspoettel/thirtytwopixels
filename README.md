@@ -4,8 +4,7 @@
     <img height="360" src="./assets/build_dark.jpg" alt="Finished build in a dark room" />
 </div>
 
-> RGB LED matrix album art display for mpd+ncmpcpp (and possibly other players)
-
+> wireless LED album art display for mpd+ncmpcpp (and possibly other players)
 
 ## Hardware
 
