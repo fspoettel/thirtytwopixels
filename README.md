@@ -10,6 +10,7 @@
 - A 5V 4A power adapter
 
 Refer to the [Adafruit instructions](https://learn.adafruit.com/adafruit-rgb-matrix-bonnet-for-raspberry-pi/) to set it up.
+I recommend to do the PWM mod, it completely removed noticeable flicker for me.
 
 ## Setup
 
@@ -71,6 +72,17 @@ Setup [rpi-rgb-led-matrix](https://github.com/hzeller/rpi-rgb-led-matrix):
 cd matrix
 make build-python PYTHON=$(which python3)
 sudo make install-python PYTHON=$(which python3)
+```
+
+Set panel options in `server.py`. You probably at least want to touch the pixel mapper config:
+
+```py
+def matrix_factory(width):
+    options = RGBMatrixOptions()
+    # ...
+    panel = RGBMatrix(options=options)
+    return panel
+
 ```
 
 Run the server:

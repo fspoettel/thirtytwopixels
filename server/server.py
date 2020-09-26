@@ -18,10 +18,14 @@ class MockMatrix:
 
 def matrix_factory(width):
     options = RGBMatrixOptions()
-    options.rows = width
+    # `pwm` requires small hardware mod but greatly improves flicker
+    options.hardware_mapping = "adafruit-hat-pwm"
     options.chain_length = 1
-    options.parallel = 1
-    options.hardware_mapping = "adafruit-hat"
+    options.rows = width
+    # these settings work well on a zero wh
+    options.gpio_slowdown = 0
+    options.pwm_lsb_nanoseconds = 100
+    options.pwm_dither_bits = 1
     panel = RGBMatrix(options=options)
     return panel
 
