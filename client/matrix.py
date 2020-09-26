@@ -21,7 +21,7 @@ class Matrix:
         self.socket.setsockopt(zmq.RCVTIMEO, 2000)
 
     def resize_to_panel(self, path):
-        return Image.open(path).resize(self.size)
+        return Image.open(path).convert('RGB').resize(self.size)
 
     def image_to_bytes(self, im):
         byte_io = io.BytesIO()
