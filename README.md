@@ -1,7 +1,7 @@
 # thirtytwopixels
 
-<div align="center">
-    <img height="360" src="./assets/build_dark.jpg" alt="Finished build in a dark room" />
+<div>
+    <img height="400" src="./assets/build_dark.jpg" alt="Finished build in a dark room" />
 </div>
 
 > wireless LED album art display for mpd+ncmpcpp (and possibly other players)
