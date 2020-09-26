@@ -15,7 +15,7 @@
 - A 5V 4A power adapter
 
 Refer to the [Adafruit instructions](https://learn.adafruit.com/adafruit-rgb-matrix-bonnet-for-raspberry-pi/) to set it up.
-I recommend to do the PWM mod, it completely removed noticeable flicker for me.
+I recommend to do [the PWM mod](https://github.com/hzeller/rpi-rgb-led-matrix#improving-flicker), it completely removed noticeable flicker for me. This requires minor soldering.
 
 ## Setup
 
