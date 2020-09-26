@@ -1,6 +1,11 @@
 # thirtytwopixels
 
+<div align="center">
+    <img height="360" src="./assets/build_dark.jpg" alt="Finished build in a dark room" />
+</div>
+
 > RGB LED matrix album art display for mpd+ncmpcpp (and possibly other players)
+
 
 ## Hardware
 
@@ -92,3 +97,13 @@ Run the server:
 ```sh
 python3 server/server.py
 ```
+
+## Pictures
+
+<div align="center">
+    <img src="./assets/build_light.jpg" alt="Finished build in a light room" />
+</div>
+
+<div align="center">
+    <img src="./assets/build_back.jpg" alt="Back of finished build" />
+</div>
