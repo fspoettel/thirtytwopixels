@@ -4,7 +4,7 @@
     <img height="400" src="./assets/build_dark.jpg" alt="Finished build in a dark room" />
 </div>
 
-> wireless LED album art display for mpd+ncmpcpp (and possibly other players)
+> wireless LED album art display for [mpd](https://www.musicpd.org/)+[ncmpcpp](https://wiki.archlinux.org/index.php/ncmpcpp) (and others via the CLI)
 
 ## Hardware
 
@@ -20,7 +20,7 @@ I recommend to do [the PWM mod](https://github.com/hzeller/rpi-rgb-led-matrix#im
 
 The project is split into two parts:
 
-- a client script that is invoked from `ncmpcpp`'s config hooks
+- a client script that is invoked from `ncmpcpp`'s config hooks or the CLI
 - a server script that runs on a raspberry pi connected to the LED matrix
 
 Communication between client and server is handled by a 0MQ TCP socket.
@@ -39,6 +39,13 @@ Install required modules:
 pip3 install -r requirements.txt
 ```
 
+#### Command-line interface (CLI)
+
+- `python3 show.py <path_to_image>` displays an arbitrary image
+- `python3 clear.py` clears the display
+
+#### MPD integration
+
 Add the following lines to `~/.ncmpcpp/config`:
 
 ```conf
@@ -54,7 +61,7 @@ chmod +x on_song_change.py
 chmod +x on_player_state_change.py
 ```
 
-If your pi is not using the hostname `raspberrypi.local`, you will need to adjust `ZMQ_HOST` in `./client/matrix.py`.
+If your pi is not using the host name `raspberrypi.local`, you will need to adjust `ZMQ_HOST` in `./client/matrix.py`.
 
 > ℹ️ It is assumed that `cover.{jpg,png}` files are stored in the album folders alongside music files. If that is not the case, you'll need to implement a module analogous to `./client/mpd.py` and call its `get_cover` method in `./on_song_change.py`. The method should return an absolute file system path to an image.
 
@@ -124,11 +131,6 @@ You can then enable the service via:
 sudo systemctl enable thirtytwopixels.service
 ```
 
-## Command-line interface
-
-- `python3 clear.py` clears the display
-- `python3 show.py <path_to_image>` displays an arbitrary image
-
 ## Pictures
 
 <div align="center">
@@ -138,3 +140,8 @@ sudo systemctl enable thirtytwopixels.service
 <div align="center">
     <img src="./assets/build_back.jpg" alt="Back of finished build" />
 </div>
+
+## In the wild
+
+- [Hackaday article](https://hackaday.com/2020/10/11/lo-fi-art-on-a-32x32-matrix/)
+- Built something? [Add it!](https://github.com/fspoettel/thirtytwopixels/edit/master/README.md)
