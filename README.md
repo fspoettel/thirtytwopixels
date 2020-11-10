@@ -144,4 +144,5 @@ sudo systemctl enable thirtytwopixels.service
 ## In the wild
 
 - [Hackaday article](https://hackaday.com/2020/10/11/lo-fi-art-on-a-32x32-matrix/)
+- [flipflip's AlbumArtDisplay](https://github.com/phkehl/AlbumArtDisplay) using ESP32 and Arduino
 - Built something? [Add it!](https://github.com/fspoettel/thirtytwopixels/edit/master/README.md)
