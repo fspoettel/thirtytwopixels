@@ -47,9 +47,7 @@ class Panel:
         )
         self.timeout.start()
 
-    def draw(self, message):
-        byte_io = io.BytesIO(message)
-
+    def draw(self, byte_io):
         if not compare_bytes(self.prev_byte_io, byte_io):
             self.prev_byte_io = byte_io
             im = Image.open(byte_io)

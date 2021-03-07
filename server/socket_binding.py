@@ -1,3 +1,4 @@
+import io
 import syslog
 import zmq
 
@@ -18,7 +19,7 @@ class SocketBinding:
                 if message == b"UUDDLRLRBA":
                     self.panel.clear()
                 else:
-                    self.panel.draw(message)
+                    self.panel.draw(io.BytesIO(message))
                 self.socket.send(b"1")
             except Exception as e:
                 syslog.syslog(syslog.LOG_ERR, str(e))
