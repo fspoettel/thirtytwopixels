@@ -87,7 +87,7 @@ make build-python PYTHON=$(which python3)
 sudo make install-python PYTHON=$(which python3)
 ```
 
-Set / adjust panel options in `server.py`:
+Set / adjust panel options in `server/matrix_factory.py`:
 
 ```py
 def matrix_factory(width):
