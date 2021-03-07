@@ -41,8 +41,8 @@ pip3 install -r requirements.txt
 
 #### Command-line interface (CLI)
 
-- `python3 show.py <path_to_image>` displays an arbitrary image
-- `python3 clear.py` clears the display
+- `python3 scripts/show.py <path_to_image>` displays an arbitrary image
+- `python3 scripts/clear.py` clears the display
 
 #### MPD integration
 
@@ -50,24 +50,24 @@ Add the following lines to `~/.ncmpcpp/config`:
 
 ```conf
 # errors and output is appended to syslog
-execute_on_song_change="(path_to_repo/on_song_change.py &> /dev/null &)"
-execute_on_player_state_change = "(path_to_repo/on_player_state_change.py &> /dev/null &)"
+execute_on_song_change="(path_to_repo/scripts/on_song_change.py &> /dev/null &)"
+execute_on_player_state_change = "(path_to_repo/scripts/on_player_state_change.py &> /dev/null &)"
 ```
 
 Make sure that our hooks are executable:
 
 ```sh
-chmod +x on_song_change.py
-chmod +x on_player_state_change.py
+chmod +x scripts/on_song_change.py
+chmod +x scripts/on_player_state_change.py
 ```
 
-If your pi is not using the host name `raspberrypi.local`, you will need to adjust `ZMQ_HOST` in `./client/matrix.py`.
+If your pi is not using the host name `raspberrypi.local`, you will need to adjust `ZMQ_HOST` in `./client/matrix_connection.py`.
 
-> ℹ️ It is assumed that `cover.{jpg,png}` files are stored in the album folders alongside music files. If that is not the case, you'll need to implement a module analogous to `./client/mpd.py` and call its `get_cover` method in `./on_song_change.py`. The method should return an absolute file system path to an image.
+> ℹ️ It is assumed that `cover.{jpg,png}` files are stored in the album folders alongside music files. If that is not the case, you'll need to implement a module analogous to `./client/mpd.py` and call its `get_cover` method in `./scripts/on_song_change.py`. The method should return an absolute file system path to an image.
 
 ### Server
 
-Clone this repo **recursively** to include the [rgb-led-matrix](https://github.com/hzeller/rpi-rgb-led-matrix) submodule:
+Clone this repo **recursively** to include the [rpi-rgb-led-matrix](https://github.com/hzeller/rpi-rgb-led-matrix) submodule:
 
 ```sh
 git clone --recursive https://github.com/fspoettel/thirtytwopixels

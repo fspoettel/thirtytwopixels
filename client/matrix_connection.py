@@ -10,7 +10,7 @@ ZMQ_HOST = "raspberrypi.local"
 PORT = 5555
 
 
-class Matrix:
+class MatrixConnection:
     def __init__(self, socket_addr, size=[32, 32]):
         self.size = size
         self.socket_addr = "tcp://{}:{}".format(ZMQ_HOST, PORT)

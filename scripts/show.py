@@ -1,14 +1,21 @@
 #!/usr/bin/env python3
+import sys
+import os
+
+PACKAGE_PARENT = '..'
+SCRIPT_DIR = os.path.dirname(os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__))))
+sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
+
 import argparse
 from pathlib import Path
-from client.matrix import Matrix
+from client.matrix_connection import MatrixConnection
 
 parser = argparse.ArgumentParser(description="CLI to manually send messages tot thirtytwopixels")
 parser.add_argument("image")
 
 if __name__ == "__main__":
     args = parser.parse_args()
-    matrix = Matrix([32, 32])
+    matrix = MatrixConnection([32, 32])
     img_path = Path(args.image)
 
     if img_path.is_file():
