@@ -9,13 +9,14 @@
 Supported players:
 - [mpd](https://www.musicpd.org/)+[ncmpcpp](https://wiki.archlinux.org/index.php/ncmpcpp)
 - spotify
+- [home assistant](https://www.home-assistant.io/)
 - other players via the command-line interface
 
 ## Hardware
 
 - Raspberry Pi Zero WH
 - [Adafruit RGB Matrix Bonnet](https://www.adafruit.com/product/3211)
-- A 32x32 LED matrix with a HUB75 connection (available on e.g. Adafruit, Pimoroni, Aliexpress). I used [this one](https://shop.pimoroni.com/products/rgb-led-matrix-panel?variant=35962488650).
+- A 32x32 (or 64x64) LED matrix with a HUB75 connection (available on e.g. Adafruit, Pimoroni, Aliexpress). I used [this one](https://shop.pimoroni.com/products/rgb-led-matrix-panel?variant=35962488650).
 - A 5V 4A power adapter
 
 Refer to the [Adafruit instructions](https://learn.adafruit.com/adafruit-rgb-matrix-bonnet-for-raspberry-pi/) to set it up.
@@ -157,7 +158,7 @@ export SPOTIPY_REDIRECT_URI="http://localhost:9090/callback"
 
 Open the displayed URL in your local browser and log into spotify. It redirects you to a non-existing `http://localhost:9090/callback` URL with some query params. Copy the URL and past it into the ssh terminal. If it worked, the message _Succesfully logged in as user {you}_ should be displayed and a file `.cache` should be added in the repository root.
 
-Edit the service to include spotify credentials. Run `sudo systemctl edit thirtytwopixels.service` and set enter the 
+Edit the service to include spotify credentials. Run `sudo systemctl edit thirtytwopixels.service` and set enter the
 
 ```
 [Service]
@@ -175,6 +176,27 @@ Restart the server:
 sudo systemctl restart thirtytwopixels.service
 ```
 
+### Home Assistant
+If you are using [Home Assistant](https://www.home-assistant.io/), and optionally [Music Assistant](https://music-assistant.io/), this can also be used to provide album art for your media.
+
+Edit the service to include HomeAssistant credentials. Run `sudo systemctl edit thirtytwopixels.service` and set
+
+```
+[Service]
+WorkingDirectory=/usr/local/lib/thirtytwopixels
+Environment="HA_BASE_URL=http://<ha_ip>:8123"
+Environment="HA_ENTITY_ID=media_player.<name>"
+Environment="HA_TOKEN=<long_lived_ha_token>"
+```
+
+Edit `./server/server.py`, comment out the line `provider = SocketBinding(panel)` and uncomment the line `provider = HomeAssistantBinding(panel)`.
+
+Restart the server:
+
+```sh
+sudo systemctl restart thirtytwopixels.service
+```
+
 ## Pictures
 
 <div align="center">
@@ -183,6 +205,10 @@ sudo systemctl restart thirtytwopixels.service
 
 <div align="center">
     <img src="./assets/build_back.jpg" alt="Back of finished build" />
+</div>
+
+<div align="center">
+    <img src="./assets/64x64.jpg" alt="64x64 led matrix" />
 </div>
 
 ## In the wild
