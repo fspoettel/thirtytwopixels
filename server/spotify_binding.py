@@ -72,7 +72,7 @@ class SpotifyBinding:
         byte_io = io.BytesIO()
         img_io = io.BytesIO(content)
 
-        im = Image.open(img_io).resize([32, 32])
+        im = Image.open(img_io).resize([self.panel.matrix.width, self.panel.matrix.height])
         im.save(byte_io, format="PPM")
 
         return byte_io

@@ -5,7 +5,6 @@ from rgbmatrix import RGBMatrix, RGBMatrixOptions
 
 IS_PRODUCTION = os.uname()[4][:3] == "arm"
 
-
 class MockMatrix:
     def Clear(self):
         print("Clearing matrix")
@@ -16,7 +15,7 @@ class MockMatrix:
         print("[{}] {}".format(time.time(), byte_io.getbuffer().nbytes))
 
 
-def matrix_factory(width):
+def matrix_factory(size):
     if not IS_PRODUCTION:
         return MockMatrix()
 
@@ -24,7 +23,8 @@ def matrix_factory(width):
     # `pwm` requires small hardware mod but greatly improves flicker
     options.hardware_mapping = "adafruit-hat-pwm"
     options.chain_length = 1
-    options.rows = width
+    options.rows = size
+    options.cols = size
     # these settings work well on a zero wh
     options.gpio_slowdown = 0
     options.pwm_lsb_nanoseconds = 100
